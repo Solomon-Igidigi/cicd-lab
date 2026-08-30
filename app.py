@@ -1,5 +1,17 @@
-def add(a, b):
-  return a + b
+from flask import Flask
 
-if __name__=="__main__":
-  print(add(2, 3))
+app = Flask(__name__)
+
+
+@app.route("/")
+def home():
+    return "Hello from my CI/CD pipeline!"
+
+
+@app.route("/health")
+def health():
+    return {"status": "healthy"}
+
+
+if __name__ == "__main__":
+    app.run(host="0.0.0.0", port=5000)
