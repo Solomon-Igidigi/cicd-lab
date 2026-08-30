@@ -26,3 +26,5 @@ jobs:
       - name: Run tests
         run: pytest
 
+      - name: Build docker image
+        run: docker build -t cicd-lab:${{ github.sha }} .
