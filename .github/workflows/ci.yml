@@ -40,20 +40,6 @@ jobs:
       - name: Build Docker image
         if: github.event_name == 'push'
         run: |
-          IMAGE_NAME=ghcr.io/${{ github.repository }}
-          docker build -t $IMAGE_NAME:${{ github.sha }} .
-          docker tag $IMAGE_NAME:${{ github.sha }} $IMAGE_NAME:latest
-
-      - name: Push Docker image
-        if: github.event_name == 'push'
-        run: |
-          IMAGE_NAME=ghcr.io/${{ github.repository }}
-          docker push $IMAGE_NAME:${{ github.sha }}
-          docker push $IMAGE_NAME:latest
-
-      - name: Build Docker image
-        if: github.event_name == 'push'
-        run: |
           IMAGE_NAME=ghcr.io/${GITHUB_REPOSITORY,,}
           docker build -t $IMAGE_NAME:${{ github.sha }} .
           docker tag $IMAGE_NAME:${{ github.sha }} $IMAGE_NAME:latest
