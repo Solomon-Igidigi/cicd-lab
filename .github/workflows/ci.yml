@@ -1,7 +1,7 @@
-name: Python CI
+name: Python CI/CD
 
 on:
-  push:                                            
+  push:
     branches: [main]
   pull_request:
     branches: [main]
@@ -15,7 +15,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repo
+      - name: Checkout repository
         uses: actions/checkout@v4
 
       - name: Set up Python
@@ -29,25 +29,24 @@ jobs:
       - name: Run tests
         run: pytest
 
-      - name: Log in to Github Container registry
-        if: github.event_name=='push'
+      - name: Log in to GitHub Container Registry
+        if: github.event_name == 'push'
         uses: docker/login-action@v3
         with:
           registry: ghcr.io
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-
-      - name: Build docker image
+      - name: Build Docker image
         if: github.event_name == 'push'
         run: |
           IMAGE_NAME=ghcr.io/${{ github.repository }}
           docker build -t $IMAGE_NAME:${{ github.sha }} .
           docker tag $IMAGE_NAME:${{ github.sha }} $IMAGE_NAME:latest
 
-      - name: Push docker image
+      - name: Push Docker image
         if: github.event_name == 'push'
         run: |
-          IMAGE_NAME=ghcr.io/${{ github repository }}
+          IMAGE_NAME=ghcr.io/${{ github.repository }}
           docker push $IMAGE_NAME:${{ github.sha }}
           docker push $IMAGE_NAME:latest
